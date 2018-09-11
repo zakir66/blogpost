@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} This is the user profile{% endblock %}
+{% block style %}
+<style type="text/css">
+	#fh5co-offcanvas {
+width: auto;
+}
+#fh5co-offcanvas .fh5co-menu, #fh5co-offcanvas .fh5co-bio {
+width: 280px;
+padding: 50px;
+}
+</style>
+{% endblock %}
+{% block profile %}
+<div class="fh5co-bio">
+	<figure>
+		<img src="{{ auth.profile_pic.url }}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+	</figure>
+	<h3 class="heading">About Me</h3>
+	<h2>{{ auth.name.get_full_name }}</h2>
+	<h4>{{ auth.name.email }}</h4>
+	<p>{{ auth.details }}</p>
+	<ul class="fh5co-social">
+		<li><a href="#"><i class="icon-twitter"></i></a></li>
+		<li><a href="#"><i class="icon-facebook"></i></a></li>
+		<li><a href="#"><i class="icon-instagram"></i></a></li>
+	</ul>
+</div>
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row fh5co-post-entry">
+		<h3 class="container">Author: {{ auth.name.get_full_name }}</h3>
+		{% for p in post %}
+		<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+			<figure>
+				<a href="{% url 'single_post' id=p.id %}"><img src="{{ p.image.url }}" alt="Image" class="img-responsive"></a>
+			</figure>
+			<span class="fh5co-meta"><a href="{% url 'topic' name=p.category.name %}">{{ p.category }}</a></span>
+			<h2 class="fh5co-article-title"><a href="{% url 'single_post' id=p.id %}">{{ p.title }}</a></h2>
+			<span class="fh5co-meta fh5co-date">{{ p.posted_on }}</span>
+		</article>
+		{% endfor %}
+		<div class="clearfix visible-xs-block"></div>
+	</div>
+</div>
+<div class="container-fluid">
+		<div class="pagination">
+			<span class="step-links">
+				{% if post.has_previous %}
+					<a href="?page=1">&laquo; first</a>
+					<a href="?page={{ post.previous_page_number }}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					Page {{ post.number }} of {{ post.paginator.num_pages }}.
+				</span>
+
+				{% if post.has_next %}
+					<a href="?page={{ post.next_page_number }}">next</a>
+					<a href="?page={{ post.paginator.num_pages }}">last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
+	</div>
+{% endblock %}
+{% block scrift %}
+
+{% endblock %}

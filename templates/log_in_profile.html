@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}Welcome to our django blog{% endblock %}
+{% block style %}
+<style>
+    .alert.alert-success {
+        height: 50px;
+        margin-top: 200px;
+    }
+    .alert.alert-warning {
+        height: 50px;
+        margin-top: 200px;
+    }
+</style>
+    
+{% endblock %}
+{% block profile %}
+<div class="fh5co-bio">
+    <figure>
+        <img src="{{ user.profile_pic.url }}" alt="Free HTML5 Bootstrap Template" class="img-responsive">
+    </figure>
+    <h3 class="heading">About Me</h3>
+    <h2>{{ user.name.get_full_name }}</h2>
+    <h4>{{ user.name.email }}</h4>
+    <p>{{ user.details }} </p>
+    <ul class="fh5co-social">
+        <li><a href="#"><i class="icon-twitter"></i></a></li>
+        <li><a href="#"><i class="icon-facebook"></i></a></li>
+        <li><a href="#"><i class="icon-instagram"></i></a></li>
+    </ul>
+</div>    
+{% endblock %}
+{% block content %}
+<div class="container">
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    <a href="{% url 'create' %}" class="btn btn-success pull pull-right">Add New Post</a>
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-center success" >
+                <td>Title</td>
+                <td>Posted On</td>
+                <td>Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in post %}
+            <tr class="text-center">
+                <td>
+                    {{ p.title }}
+                </td>
+                <td>
+                    {{ p.posted_on }}
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="{% url 'delete' pid=p.id %}" role="button">DELETE</a><a class="btn btn-warning" href="{% url 'update' pid=p.id%}" role="button">EDIT</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block scrift %}
+{% endblock %}

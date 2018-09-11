@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}all topics{% endblock %}
+{% block style %}
+<style>
+    .alert.alert-success {
+        height: 50px;
+        margin-top: 200px;
+    }
+    .alert.alert-warning {
+        height: 50px;
+        margin-top: 200px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+{% if request.user.is_authenticated %}
+    {% if request.user.is_staff or request.user.is_superuser %}
+    <a href="{% url 'createTopic' %}" class="btn btn-success pull pull-right">Add New Category</a>
+    {% endif %}      
+{% endif %}
+<table class="table table-striped">
+    <thead>
+        <tr class="text-center success" >
+            <td>Topics</td>
+        {% if request.user.is_authenticated %}
+            {% if request.user.is_staff or request.user.is_superuser %}
+            <td>Action</td>
+            {% endif %}      
+        {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in topic %}
+        <tr class="text-center">
+            <td>
+                <a href="{% url 'topic' name=t.name %}">{{ t.name }}</a>
+            </td>
+            <td>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_staff or request.user.is_superuser %}
+                    <a class="btn btn-danger" href="{% url 'cdelete' pid=t.id %}" role="button">DELETE</a><a class="btn btn-warning" href="{% url 'cupdate' pid=t.id%}" role="button">EDIT</a>
+                    {% endif %}      
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block scrift %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}This is the category{% endblock %}
+{% block style %}
+<style type="text/css">
+	#fh5co-offcanvas {
+width: auto;
+}
+#fh5co-offcanvas .fh5co-menu, #fh5co-offcanvas .fh5co-bio {
+width: auto;
+padding: 50px;
+}
+</style>
+{% endblock %}
+    
+    {% block content %}
+    <h1 class="container">Category: {{ cat.name }}</h1>
+	<!-- END #fh5co-header -->
+	<div class="container-fluid">
+		
+		<div class="row fh5co-post-entry">
+				{% for p in post %}
+			<article class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xxs-12 animate-box">
+				<figure>
+					<a href="{% url 'single_post' id=p.id %}"><img src="{{ p.image.url }}" alt="Image" class="img-responsive"></a>
+				</figure>
+				<span class="fh5co-meta"><a href="{% url 'topic' name=p.category.name %}">{{ p.category.name }}</a></span>
+				<h2 class="fh5co-article-title"><a href="{% url 'single_post' id=p.id %}">{{ p.title }}</a></h2>
+				<span class="fh5co-meta fh5co-date">{{ p.posted_on }}</span>
+			</article>	
+			<div class="clearfix visible-xs-block"></div>
+			{% endfor %}
+		</div>	
+    </div>
+    <div class="container-fluid">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if post.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ post.previous_page_number }}">previous</a>
+                    {% endif %}
+    
+                    <span class="current">
+                        Page {{ post.number }} of {{ post.paginator.num_pages }}.
+                    </span>
+    
+                    {% if post.has_next %}
+                        <a href="?page={{ post.next_page_number }}">next</a>
+                        <a href="?page={{ post.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+	{% endblock %}
+
+{% block scrift %}
+{% endblock %}
